@@ -1,20 +1,23 @@
 const mail = require('../Utils/mailer');
-const logs = require('../Utils/logs')
+const model_response = require('../Models/model_response');
 
-const sendEmail = async (req,res) => 
+const sendEmail = async (req, res, next) => 
 {
-    var { emails, message, subject } = req.body;
-    logs.writeLog(req.body, "SOLICITUD");
+    var response = model_response;
     try 
     {
+        var { emails, message, subject } = req.body;
         await mail.sendEmail(emails, subject, message);
-    } 
+
+        response.message = "Exito";
+    }
     catch (error) 
     {
-        res.status(500).json({ mensaje: error})    
+        response.code = 1;
+        response.message = error;
     }
-
-    res.status(200).json({ mensaje: "Exito"});
+    req.body = response;
+    next();
 
 }
 
