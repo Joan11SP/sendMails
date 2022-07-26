@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
-app.use(middleware.authBasic);
+//app.use(middleware.authBasic);
 app.use(middleware.inputData);
 
 app.use('/api', routes);
